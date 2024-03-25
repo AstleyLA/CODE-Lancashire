@@ -1,27 +1,24 @@
-import React, { useState, useCallback } from 'react';
-import TodoInput from './components/TodoInput';
-import TodoList from './components/TodoList';
-import './index.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import NavBar from './components/NavBar';
+import HomePage from './pages/Homepage';
+import TodoListPage from './pages/TodoListPage';
+import SavedTodoLists from './pages/SavedTodoLists';
+import DayScheduler from './pages/DayScheduler';
 
 const App = () => {
-  const [tasks, setTasks] = useState([]);
-
-  const addTask = useCallback((task) => {
-    setTasks([...tasks, task]);
-  }, [tasks]);
-
-  const deleteTask = useCallback((index) => {
-    const updatedList = [...tasks];
-    updatedList.splice(index, 1);
-    setTasks(updatedList);
-  }, [tasks]);
-
   return (
-    <div className="flex flex-col items-center">
-      <h1 className="text-4xl m-16 font-bold"> To-Do List App</h1>
-      <TodoInput addTask={addTask} />
-      <TodoList tasks={tasks} deleteTask={deleteTask} />
-    </div>
+    <Router>
+      <div>
+        <NavBar />
+        <Switch>
+          <Route path="/" exact component={HomePage} />
+          <Route path="/todo-list" component={TodoListPage} />
+          <Route path="/saved-todo-lists" component={SavedTodoLists} />
+          <Route path="/day-scheduler" component={DayScheduler} />
+        </Switch>
+      </div>
+    </Router>
   );
 };
 

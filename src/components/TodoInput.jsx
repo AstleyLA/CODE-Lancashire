@@ -25,7 +25,7 @@ const TodoInput = ({ addTask }) => {
       />
       <button
         onClick={handleAddTask}
-        className="bg-green-400 text-white p-2 m-3 rounded-md font-bold hover:bg-green-600"
+        className="bg-emerald-400 text-white p-2 m-3 rounded-md font-bold hover:bg-emerald-600"
       >
         Add Task
       </button>
