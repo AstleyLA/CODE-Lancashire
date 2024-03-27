@@ -1,0 +1,29 @@
+# backend/main.py
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+from typing import List
+from sqlalchemy.orm import Session
+from database import SessionLocal, engine
+from models import Base, TodoList, Task
+
+app = FastAPI()
+
+Base.metadata.create_all(bind=engine)
+
+class ListCreate(BaseModel):
+    title: str
+    todos: List[str]
+
+@app.post("/api/lists")
+def create_list(list_data: ListCreate, db: Session = SessionLocal()):
+    db_list = TodoList(title=list_data.title)
+    for todo in list_data.todos:
+        db_list.tasks.append(Task(task=todo))
+    db.add(db_list)
+    db.commit()
+    db.refresh(db_list)
+    return db_list
+
+@app.get("/api/lists")
+def get_lists(db: Session = SessionLocal()):
+    return db.query(TodoList).all()
